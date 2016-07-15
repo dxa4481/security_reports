@@ -1,0 +1,67 @@
+<html ng-app="mainApp">
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.6/angular-sanitize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+        <script src="project.js"></script>
+        <script src="main.js"></script>
+    </head>
+
+    <body ng-controller="mainController" style="padding: 11px;">
+
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo center">{{project.title}}</a>
+            </div>
+        </nav>
+        <ul style="padding: 5px" class="collapsible z-depth-2" data-collapsible="expandable">
+            <li ng-repeat="issue in project.issues">
+                <div style="width:50%; color: white; margin: auto;" class="waves-effect waves-light collapsible-header z-depth-1 {{issue.score > 7 ? 'red darken-2': issue.score > 5 ? 'orange darken-1': issue.score > 3 ? 'amber': 'cyan accent-3' }}">{{issue.title}}</div>
+                <div class="collapsible-body">
+                    <div class="card blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">Description</span>
+                            <p>
+                                {{issue.description}}
+                            </p>
+                            <span class="card-title">{{issue.pages.length > 1 ? "Pages" : "Page"}} impacted</span>
+                                <ul style="margin:2em;">
+                                    <li ng-repeat="page in issue.pages">
+                                        - {{page}}
+                                    </li>
+                                </ul>
+                            <span class="card-title">Verification</span>
+                            <p>
+                                {{issue.verification.text}}
+                            </p>
+                            <div style="margin:2em;" ng-repeat="image in issue.verification.images">
+                                <div ng-if="image.url">
+                                    <img style="width:90%; border:1px solid #021a40" src="{{image.url}}"></img>
+                                    </br>
+                                    <b>{{image.description}}</b>
+                                </div>
+                                <div ng-if="image.code">
+                                    <div style="width:90%; border:1px solid #021a40"><code ng-bind="image.code"></code></div>
+                                    </br>
+                                    <b>{{image.description}}</b>
+                                </div>
+                                <div ng-if="image.demo">
+                                    <div ng-bind-html="image.demo | to_trusted"></div>
+                                    </br>
+                                    <b>{{image.description}}</b>
+                                </div>
+
+                            </div>
+                            <span class="card-title">Recommendation</span>
+                            <p>
+                                {{issue.recommendation}}
+                            </p>
+                        </div>
+                    </div> 
+                </div>
+            </li>
+        </ul>        
+    </body>
+</html>
